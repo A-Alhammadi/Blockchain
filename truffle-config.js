@@ -11,7 +11,7 @@ module.exports = {
 
   compilers: {
     solc: {
-      version: "0.8.21"  // solidity version
+      version: "0.8.0"  // solidity version
       // settings: {
       //   optimizer: {
       //     enabled: true,   // Enable if you want the contract to be optimized
