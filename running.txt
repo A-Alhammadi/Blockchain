@@ -1,7 +1,5 @@
 
 
-
-
 Start Ganache:
 
 Truffle Migrate:
