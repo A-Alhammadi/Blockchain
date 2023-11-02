@@ -1,9 +1,23 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+
 contract VotingSystem {
 
     event CandidateRegistered(uint256 candidateId, string name);
+
+    bool public isVotingStarted = false;
+    bool public isVotingEnded = false;
+
+function startVoting() public {
+    require(!isVotingStarted, "Voting has already started.");
+    isVotingStarted = true;
+}
+
+function endVoting() public {
+    require(isVotingStarted && !isVotingEnded, "Voting hasn't started or already ended.");
+    isVotingEnded = true;
+}
 
     // Struct for a single voter
     struct Voter {
@@ -43,6 +57,7 @@ contract VotingSystem {
 
     // Vote for candidate
     function vote(uint _candidateId) public {
+        require(isVotingStarted && !isVotingEnded, "Voting not allowed at this time.");
         Voter storage sender = voters[msg.sender];
         require(!sender.hasVoted, "You have already voted.");
         require(_candidateId < candidates.length, "Invalid candidate.");
