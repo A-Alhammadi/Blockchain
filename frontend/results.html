@@ -25,8 +25,7 @@
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.x/dist/web3.min.js"></script>
     <script src="js/app.js" defer></script>
     <script>
-        // You can populate the results table with the data from displayCandidatesAndVotes() 
-        // This is just a basic way, but in a real-world scenario, a framework or library would be more efficient.
+        // populate the results table with the data from displayCandidatesAndVotes() 
         async function displayCandidatesAndVotes() {
             try {
                 const totalCandidates = await votingSystem.methods.getCandidatesCount().call();
@@ -43,6 +42,8 @@
                 console.error("Error fetching candidates and their votes:", error);
             }
         }
+        window.onload = displayCandidatesAndVotes;
+
     </script>
 </body>
 </html>
