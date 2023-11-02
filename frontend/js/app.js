@@ -1,6 +1,6 @@
 let web3;
 let votingSystem;
-const contractAddress = "0xb98b006b6d3041b13548A6Aa7C5eA5ec34313514"; //build/contracts/json file, networks section
+const contractAddress = "0xa590bebd3B3F429304438107b5E97198b2CA9D28"; //build/contracts/json file, networks section
 const contractABI = [
   {
     "anonymous": false,
@@ -252,7 +252,7 @@ async function endVoting() {
   const accounts = await web3.eth.getAccounts();
   await votingSystem.methods.endVoting().send({ from: accounts[0] });
 }
-async function displayCandidatesAndVotes() {
+/*async function displayCandidatesAndVotes() {
   try {
       const totalCandidates = await votingSystem.methods.getCandidatesCount().call();
       let candidatesList = [];
@@ -271,4 +271,4 @@ async function displayCandidatesAndVotes() {
       console.error("Error fetching candidates and their votes:", error);
       // Optionally, inform the user about the error
   }
-}
+}*/
