@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Results Page</title>
+</head>
+<body>
+    <h1>Results</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Candidate Name</th>
+                <th>Votes</th>
+            </tr>
+        </thead>
+        <tbody id="resultsTable">
+            <!-- Rows will be populated dynamically using JavaScript -->
+        </tbody>
+    </table>
+
+    <button onclick="displayCandidatesAndVotes()">Refresh Results</button>
+    
+    <p><a href="landing.html">Back to Home</a></p>
+
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.x/dist/web3.min.js"></script>
+    <script src="js/app.js" defer></script>
+    <script>
+        // You can populate the results table with the data from displayCandidatesAndVotes() 
+        // This is just a basic way, but in a real-world scenario, a framework or library would be more efficient.
+        async function displayCandidatesAndVotes() {
+            try {
+                const totalCandidates = await votingSystem.methods.getCandidatesCount().call();
+                let tableHTML = "";
+                
+                for (let i = 0; i < totalCandidates; i++) {
+                    const candidate = await votingSystem.methods.candidates(i).call();
+                    tableHTML += `<tr><td>${candidate.name}</td><td>${candidate.voteCount}</td></tr>`;
+                }
+                
+                document.getElementById('resultsTable').innerHTML = tableHTML;
+                
+            } catch (error) {
+                console.error("Error fetching candidates and their votes:", error);
+            }
+        }
+    </script>
+</body>
+</html>

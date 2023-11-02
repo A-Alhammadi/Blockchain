@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voter Page</title>
+</head>
+<body>
+    <h1>Voter Page</h1>
+    
+    <h2>Register as a Candidate</h2>
+    <input id="candidateName" type="text" placeholder="Candidate Name">
+    <button onclick="registerCandidate()">Register</button>
+    
+    <h2>Register as a Voter</h2>
+    <button onclick="registerVoter()">Register</button>
+    
+    <h2>Vote for a Candidate</h2>
+    <input id="candidateId" type="number" placeholder="Candidate ID">
+    <button onclick="voteForCandidate()">Vote</button>
+    
+    <h2>Admin Controls</h2>
+    <button onclick="startVoting()">Start Voting</button>
+    <button onclick="endVoting()">End Voting</button>
+
+    <p><a href="landing.html">Back to Home</a></p>
+
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.x/dist/web3.min.js"></script>
+    <script src="js/app.js" defer></script>
+</body>
+</html>
