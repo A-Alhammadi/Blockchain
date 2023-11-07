@@ -72,6 +72,10 @@ function endVoting() public {
     function getCandidatesCount() public view returns (uint) {
         return candidates.length;
     }
+    
+    function getAllCandidates() public view returns (Candidate[] memory) {
+    return candidates;
+}
 
     // Get specific candidate's vote count
     function getCandidateVoteCount(uint _candidateId) public view returns (uint) {
