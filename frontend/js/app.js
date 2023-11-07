@@ -1,6 +1,6 @@
 let web3;
 let votingSystem;
-const contractAddress = "0xa590bebd3B3F429304438107b5E97198b2CA9D28"; //build/contracts/json file, networks section
+const contractAddress = "0xb3B2F4c6458e6abd163D767a1CAb8645e47c5834"; //build/contracts/json file, networks section
 const contractABI = [
   {
     "anonymous": false,
@@ -162,6 +162,31 @@ const contractABI = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getAllCandidates",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "voteCount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct VotingSystem.Candidate[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -182,17 +207,36 @@ const contractABI = [
   }
 ]; // ABI of your contract copied from same json file as address
 
+
+
 window.addEventListener('load', async () => {
     if (window.ethereum) {
         web3 = new Web3(window.ethereum);
         await window.ethereum.enable(); // Request access to user's Ethereum wallet
+        votingSystem = new web3.eth.Contract(contractABI, contractAddress);
+
+        // Subscribe to the CandidateRegistered event
+        votingSystem.events.CandidateRegistered()
+            .on('data', async (event) => {
+                console.log('Candidate registered:', event.returnValues);
+                await updateCandidateList(); // Call the function to update the list on the page
+            })
+            .on('error', console.error);
+
+        // Update candidate list on page load
+        await updateCandidateList();
     } else {
         console.error("No Ethereum provider found. Install MetaMask!");
         return;
     }
-
-    votingSystem = new web3.eth.Contract(contractABI, contractAddress);
 });
+
+// ... rest of the functions like requestAccount, checkRegisteredVoter, etc...
+
+async function updateCandidateList() {
+    // ... function body remains the same...
+}
+
 async function requestAccount() {
   await window.ethereum.request({ method: 'eth_requestAccounts' });
 }
@@ -252,6 +296,33 @@ async function endVoting() {
   const accounts = await web3.eth.getAccounts();
   await votingSystem.methods.endVoting().send({ from: accounts[0] });
 }
+async function getCandidates() {
+  const candidates = await votingSystem.methods.getAllCandidates().call();
+  // Use the 'candidates' array to display on the voting page
+  console.log(candidates);
+  // Now you can update the DOM with these details to show a list of candidates
+}
+async function updateCandidateList() {
+  const candidates = await votingSystem.methods.getAllCandidates().call();
+  const candidatesListElement = document.getElementById('candidates-list');
+
+  // Clear existing candidate list
+  candidatesListElement.innerHTML = '';
+
+  // Add new candidates to the list
+  candidates.forEach((candidate, index) => {
+    const candidateElement = document.createElement('div');
+    candidateElement.textContent = `ID: ${index}, Name: ${candidate.name}, Votes: ${candidate.voteCount}`;
+    candidatesListElement.appendChild(candidateElement);
+  });
+}
+votingSystem.events.CandidateRegistered()
+  .on('data', async (event) => {
+    console.log('Candidate registered:', event.returnValues);
+    await updateCandidateList(); // Call the function to update the list on the page
+  })
+  .on('error', console.error);
+
 /*async function displayCandidatesAndVotes() {
   try {
       const totalCandidates = await votingSystem.methods.getCandidatesCount().call();
