@@ -3,26 +3,23 @@
 <head>
     <title>Voter Page</title>
     <link rel="stylesheet" type="text/css" href="css/voter.css">
-    <img src="ethelect.png" alt="Ethelect Logo" id="ethelect-logo">
-
 </head>
 <body>
+    <img src="ethelect.png" alt="Ethelect Logo" id="ethelect-logo">
     <h1>Voter Page</h1>
-    
-    <h2>Register as a Candidate</h2>
-    <input id="candidateName" type="text" placeholder="Candidate Name">
-    <button onclick="registerCandidate()">Register</button>
-    
-    <h2>Register as a Voter</h2>
-    <button onclick="registerVoter()">Register</button>
-    
+
+    <!-- Voter Login -->
+    <h2>Login as a Voter</h2>
+    <button onclick="requestAccount()">Login with MetaMask</button>
+
+    <h2>Candidates List</h2>
+    <div id="candidates-list">
+        <!-- Candidates will be listed here -->
+    </div>
+
     <h2>Vote for a Candidate</h2>
     <input id="candidateId" type="number" placeholder="Candidate ID">
     <button onclick="voteForCandidate()">Vote</button>
-    
-    <h2>Admin Controls</h2>
-    <button onclick="startVoting()">Start Voting</button>
-    <button onclick="endVoting()">End Voting</button>
 
     <p><a href="landing.html">Back to Home</a></p>
 
@@ -30,3 +27,4 @@
     <script src="js/app.js" defer></script>
 </body>
 </html>
+
