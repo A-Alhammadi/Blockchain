@@ -1,6 +1,6 @@
 let web3;
 let votingSystem;
-const contractAddress = "0xb3B2F4c6458e6abd163D767a1CAb8645e47c5834"; //build/contracts/json file, networks section
+const contractAddress = "0x34eea99Eb1aBC97c3ab553Ca0CD27a895f5c6299"; //build/contracts/json file, networks section
 const contractABI = [
   {
     "anonymous": false,
@@ -251,8 +251,8 @@ async function checkRegisteredVoter() {
 
 async function registerCandidate() {
   try {
-      const candidateName = document.getElementById('candidateName').value;
-      const accounts = await web3.eth.getAccounts();
+    const candidateName = document.getElementById('new-candidate-name').value;
+    const accounts = await web3.eth.getAccounts();
       await votingSystem.methods.registerCandidate(candidateName).send({ from: accounts[0] });
       console.log("Candidate registered successfully!");
       // add inform the user about successful registration
