@@ -8,17 +8,9 @@
     <img src="ethelect.png" alt="Ethelect Logo" id="ethelect-logo">
     <h1>Results</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Candidate Name</th>
-                <th>Votes</th>
-            </tr>
-        </thead>
-        <tbody id="resultsTable">
-            <!-- Rows will be populated dynamically using JavaScript -->
-        </tbody>
-    </table>
+    <div id="resultsTable">
+        <!-- Candidates and votes will be populated dynamically using JavaScript -->
+    </div>
 
     <button id="refresh-results-button">Refresh Results</button>
     
@@ -28,8 +20,8 @@
     <script src="js/app.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('refresh-results-button').addEventListener('click', displayCandidatesAndVotes);
-            displayCandidatesAndVotes(); // Call this on page load to display results immediately
+            document.getElementById('refresh-results-button').addEventListener('click', updateCandidateList);
+            updateCandidateList(); // Call this on page load to display results immediately
         });
     </script>
 </body>
