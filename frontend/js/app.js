@@ -1,6 +1,6 @@
 let web3;
 let votingSystem;
-const contractAddress = "0xAAd2c38fb5A61eA8b30e49E03E852263f94Aa568"; // Replace with your contract's address
+const contractAddress = "0xc411769B83CE48b5206294f579c04aCedD02fDA7"; // Replace with your contract's address
 const contractABI = [
   {
     "anonymous": false,
@@ -207,22 +207,50 @@ const contractABI = [
   }
 ]; // Replace with your contract's ABI from JSON file anytime you edit contract
 
+await window.ethereum.request({ method: 'eth_requestAccounts' });
+localStorage.setItem('metaMaskConnected', 'true');
+
+function refreshUI() {
+  if (document.getElementById('candidates-list')) {
+    updateCandidateList();
+  } else if (document.getElementById('resultsTable')) {
+    displayCandidatesAndVotes();
+  }
+}
+
+async function requestAccount() {
+  // Check if MetaMask was connected before
+  if (localStorage.getItem('metaMaskConnected') === 'true') {
+    return (await web3.eth.getAccounts())[0];
+  }
+  
+  // Otherwise, request account access
+  const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+  localStorage.setItem('metaMaskConnected', 'true');
+  return accounts[0];
+}
+
+
 window.addEventListener('load', async () => {
-    if (window.ethereum) {
-        web3 = new Web3(window.ethereum);
-        try {
-            await window.ethereum.request({ method: 'eth_requestAccounts' });
-            votingSystem = new web3.eth.Contract(contractABI, contractAddress);
-            subscribeToEvents();
-            await updateCandidateList();
-        } catch (error) {
-            console.error("Access to Ethereum account was denied.", error);
-            // Update the UI to inform the user access was denied
-        }
-    } else {
-        console.error("No Ethereum provider found. Install MetaMask!");
-        // Update the UI to inform the user to install MetaMask
+  if (window.ethereum) {
+    web3 = new Web3(window.ethereum);
+    try {
+      // If not connected before, request account access
+      if (localStorage.getItem('metaMaskConnected') !== 'true') {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+      }
+      votingSystem = new web3.eth.Contract(contractABI, contractAddress);
+      subscribeToEvents();
+      await updateCandidateList();
+    } catch (error) {
+      console.error("Access to Ethereum account was denied.", error);
+      // Update the UI to inform user access was denied
     }
+  } else {
+    console.error("No Ethereum provider found. Install MetaMask!");
+    // Update the UI to inform user to install MetaMask
+  }
+  refreshUI(); // Ensure the UI is refreshed regardless of the MetaMask connection
 });
 
 function subscribeToEvents() {
@@ -274,21 +302,29 @@ async function registerCandidate() {
 
 
 async function voteForCandidate() {
-    try {
-        const candidateId = document.getElementById('candidateId').value;
-        if (isNaN(candidateId)) {
-            // Update the UI to prompt the user to input a valid ID
-            return;
-        }
-        const accounts = await web3.eth.getAccounts();
-        await votingSystem.methods.vote(candidateId).send({ from: accounts[0] });
-        console.log("Voted successfully!");
-        // Update the UI to inform the user about successful voting
-    } catch (error) {
-        console.error("Error voting for candidate:", error);
-        // Update the UI to inform the user about the error
-    }
+  try {
+      const candidateId = document.getElementById('candidateId').value;
+      
+      if (candidateId === '' || isNaN(candidateId) || parseInt(candidateId) < 0) {
+          alert('Please enter a valid candidate ID');
+          return;
+      }
+      
+      if (!window.ethereum)
+          throw new Error("No crypto wallet found. Please install it.");
+
+      await requestAccount(); // Request account access if not already available
+      const accounts = await web3.eth.getAccounts();
+
+      await votingSystem.methods.vote(candidateId).send({ from: accounts[0] });
+      alert('Vote cast successfully!');
+      // Optionally, update the UI to reflect the new vote
+  } catch (error) {
+      console.error("Error voting for candidate:", error);
+      alert(`Error voting for candidate: ${error.message}`);
+  }
 }
+
 
 async function startVoting() {
     try {
@@ -315,11 +351,13 @@ async function endVoting() {
 }
 
 // Listen for account changes in MetaMask and reload the page to reset state
-window.ethereum.on('accountsChanged', (accounts) => {
-    window.location.reload();
-});
+//window.ethereum.on('accountsChanged', (accounts) => {
+ //   window.location.reload();
+//});
 
 // Listen for chain changes in MetaMask and reload the page to reset state
-window.ethereum.on('chainChanged', (chainId) => {
-    window.location.reload();
-});
+//window.ethereum.on('chainChanged', (chainId) => {
+ //   window.location.reload();
+//});
+window.ethereum.on('accountsChanged', refreshUI);
+window.ethereum.on('chainChanged', refreshUI);
