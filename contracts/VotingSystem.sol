@@ -8,13 +8,27 @@ contract VotingSystem {
 
     bool public isVotingStarted = false;
     bool public isVotingEnded = false;
+    address private owner;
 
-function startVoting() public {
+// Set the owner to the message sender (account that deploys the contract)
+constructor() {
+    owner = msg.sender;
+}
+function getOwner() public view returns (address) {
+    return owner;
+}
+
+// Modifier that only allows the owner to call the function
+modifier onlyOwner() {
+    require(msg.sender == owner, "Only the owner can call this function.");
+    _;
+}
+
+function startVoting() public onlyOwner {
     require(!isVotingStarted, "Voting has already started.");
     isVotingStarted = true;
 }
-
-function endVoting() public {
+function endVoting() public onlyOwner {
     require(isVotingStarted && !isVotingEnded, "Voting hasn't started or already ended.");
     isVotingEnded = true;
 }
@@ -38,7 +52,7 @@ function endVoting() public {
     Candidate[] public candidates;
     
     // Register new candidate
-   function registerCandidate(string memory _name) public returns (uint) {
+   function registerCandidate(string memory _name) public onlyOwner returns (uint) {
     candidates.push(Candidate({
         name: _name,
         voteCount: 0
