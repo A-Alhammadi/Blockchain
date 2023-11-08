@@ -3,50 +3,34 @@
 <head>
     <title>Results Page</title>
     <link rel="stylesheet" type="text/css" href="css/results.css">
-    <img src="ethelect.png" alt="Ethelect Logo" id="ethelect-logo">
-
 </head>
 <body>
+    <img src="ethelect.png" alt="Ethelect Logo" id="ethelect-logo">
     <h1>Results</h1>
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Results Page</title>
-        <link rel="stylesheet" type="text/css" href="css/results.css">
-    </head>
-    <body>
-        <img src="ethelect.png" alt="Ethelect Logo" id="ethelect-logo">
-        <h1>Results</h1>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>Candidate Name</th>
-                    <th>Votes</th>
-                </tr>
-            </thead>
-            <tbody id="resultsTable">
-                <!-- Rows will be populated dynamically using JavaScript -->
-            </tbody>
-        </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Candidate Name</th>
+                <th>Votes</th>
+            </tr>
+        </thead>
+        <tbody id="resultsTable">
+            <!-- Rows will be populated dynamically using JavaScript -->
+        </tbody>
+    </table>
+
+    <button id="refresh-results-button">Refresh Results</button>
     
-        <button id="refresh-results-button">Refresh Results</button>
-        
-        <p><a href="landing.html">Back to Home</a></p>
-    
-        <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.x/dist/web3.min.js"></script>
-        <script src="js/app.js" defer></script>
-        <script>
-            async function displayCandidatesAndVotes() {
-                // This function is defined within app.js and should update the results list
-                await updateCandidateList(); 
-            }
-    
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('refresh-results-button').addEventListener('click', displayCandidatesAndVotes);
-                displayCandidatesAndVotes(); // Call this on page load to display results immediately
-            });
-        </script>
-    </body>
-    </html>
-    
+    <p><a href="landing.html">Back to Home</a></p>
+
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.x/dist/web3.min.js"></script>
+    <script src="js/app.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('refresh-results-button').addEventListener('click', displayCandidatesAndVotes);
+            displayCandidatesAndVotes(); // Call this on page load to display results immediately
+        });
+    </script>
+</body>
+</html>
