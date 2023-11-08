@@ -1,6 +1,6 @@
 let web3;
 let votingSystem;
-const contractAddress = "0xc411769B83CE48b5206294f579c04aCedD02fDA7"; // Replace with your contract's address
+const contractAddress = "0xFab4A58eF1b925638ebDC67E2C99713e1E31bF26"; // Replace with your contract's address
 const contractABI = [
   {
     "anonymous": false,
@@ -207,8 +207,10 @@ const contractABI = [
   }
 ]; // Replace with your contract's ABI from JSON file anytime you edit contract
 
-await window.ethereum.request({ method: 'eth_requestAccounts' });
-localStorage.setItem('metaMaskConnected', 'true');
+(async function initialize() {
+  await window.ethereum.request({ method: 'eth_requestAccounts' });
+  localStorage.setItem('metaMaskConnected', 'true');
+})();
 
 function refreshUI() {
   if (document.getElementById('candidates-list')) {
