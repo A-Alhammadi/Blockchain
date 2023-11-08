@@ -1,7 +1,12 @@
 let web3;
 let votingSystem;
-const contractAddress = "0x88b7c6D9019c91bc77A4b4750B5191530BBAacFd"; // Replace with your contract's address
+const contractAddress = "0xD248702c87D8d48ffc128e2AF03989bB0431d925"; // Replace with your contract's address
 const contractABI = [
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -90,6 +95,19 @@ const contractABI = [
         "internalType": "uint256",
         "name": "votedCandidateId",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -207,14 +225,35 @@ const contractABI = [
   }
 ]; // Replace with your contract's ABI from JSON file anytime you edit contract
 
+// Function to check if the connected account is the owner of the contract
+async function isOwner() {
+  const accounts = await web3.eth.getAccounts();
+  const contractOwner = await votingSystem.methods.getOwner().call();
+  return accounts[0].toLowerCase() === contractOwner.toLowerCase();
+}
 
-function refreshUI() {
-  if (document.getElementById('candidates-list')) {
-    updateCandidateList();
-  } else if (document.getElementById('resultsTable')) {
-    displayCandidatesAndVotes();
+
+async function refreshUI() {
+  try {
+    const userIsOwner = await isOwner();
+    if (userIsOwner) {
+      // Show admin controls
+      document.getElementById('admin-controls').style.display = 'block';
+    } else {
+      // Hide admin controls
+      document.getElementById('admin-controls').style.display = 'none';
+    }
+    if (document.getElementById('candidates-list')) {
+      await updateCandidateList();
+    } else if (document.getElementById('resultsTable')) {
+      await displayCandidatesAndVotes();
+    }
+  } catch (error) {
+    console.error('Error refreshing UI:', error);
+    // Optionally handle the error, like displaying an error message to the user
   }
 }
+
 
 async function requestAccount() {
   // Check if MetaMask was connected before
@@ -241,7 +280,7 @@ window.addEventListener('load', async () => {
       votingSystem = new web3.eth.Contract(contractABI, contractAddress);
       
       subscribeToEvents();
-      refreshUI();
+      await refreshUI();
 
       // Now that votingSystem should be set up, update the candidate list.
       await updateCandidateList();
@@ -288,6 +327,10 @@ async function updateCandidateList() {
 
 async function registerCandidate() {
   try {
+    if (!(await isOwner())) {
+        alert("You are not the owner.");
+        return;
+    }
     const candidateNameInput = document.getElementById('new-candidate-name');
     if (!candidateNameInput) {
       console.error("Can't find the new candidate name input field.");
@@ -303,6 +346,7 @@ async function registerCandidate() {
     // add inform the user about the error
   }
 }
+
 
 
 async function voteForCandidate() {
@@ -331,28 +375,38 @@ async function voteForCandidate() {
 
 
 async function startVoting() {
-    try {
-        const accounts = await web3.eth.getAccounts();
-        await votingSystem.methods.startVoting().send({ from: accounts[0] });
-        console.log("Voting started successfully!");
-        // Update the UI to inform the user
-    } catch (error) {
-        console.error("Error starting the voting:", error);
-        // Update the UI to inform the user about the error
-    }
+  try {
+      if (!(await isOwner())) {
+          alert("You are not the owner.");
+          return;
+      }
+      const accounts = await web3.eth.getAccounts();
+      await votingSystem.methods.startVoting().send({ from: accounts[0] });
+      console.log("Voting started successfully!");
+      // Update the UI to inform the user
+  } catch (error) {
+      console.error("Error starting the voting:", error);
+      // Update the UI to inform the user about the error
+  }
 }
 
+
 async function endVoting() {
-    try {
-        const accounts = await web3.eth.getAccounts();
-        await votingSystem.methods.endVoting().send({ from: accounts[0] });
-        console.log("Voting ended successfully!");
-        // Update the UI to inform the user
-    } catch (error) {
-        console.error("Error ending the voting:", error);
-        // Update the UI to inform the user about the error
-    }
+  try {
+      if (!(await isOwner())) {
+          alert("You are not the owner.");
+          return;
+      }
+      const accounts = await web3.eth.getAccounts();
+      await votingSystem.methods.endVoting().send({ from: accounts[0] });
+      console.log("Voting ended successfully!");
+      // Update the UI to inform the user
+  } catch (error) {
+      console.error("Error ending the voting:", error);
+      // Update the UI to inform the user about the error
+  }
 }
+
 async function displayCandidatesAndVotes() {
   try {
       const candidates = await votingSystem.methods.getAllCandidates().call();
@@ -410,5 +464,9 @@ async function displayCandidatesAndVotes() {
 //window.ethereum.on('chainChanged', (chainId) => {
  //   window.location.reload();
 //});
-window.ethereum.on('accountsChanged', refreshUI);
-window.ethereum.on('chainChanged', refreshUI);
+window.ethereum.on('accountsChanged', () => {
+  refreshUI().catch(console.error);
+});
+window.ethereum.on('chainChanged', () => {
+  refreshUI().catch(console.error);
+});
