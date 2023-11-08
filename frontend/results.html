@@ -9,7 +9,8 @@
     <h1>Results</h1>
 
     <div id="resultsTable">
-        <!-- Candidates and votes will be populated dynamically using JavaScript -->
+        <!-- Chart will be inserted here -->
+        <canvas id="votesChart"></canvas>
     </div>
 
     <button id="refresh-results-button">Refresh Results</button>
@@ -18,11 +19,12 @@
 
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.x/dist/web3.min.js"></script>
     <script src="js/app.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('refresh-results-button').addEventListener('click', updateCandidateList);
-            updateCandidateList(); // Call this on page load to display results immediately
+            document.getElementById('refresh-results-button').addEventListener('click', displayCandidatesAndVotes);
+            displayCandidatesAndVotes(); // Call this on page load to display results immediately
         });
-    </script>
+    </script>    
 </body>
 </html>
