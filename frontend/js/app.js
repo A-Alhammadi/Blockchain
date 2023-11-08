@@ -1,6 +1,6 @@
 let web3;
 let votingSystem;
-const contractAddress = "0xFab4A58eF1b925638ebDC67E2C99713e1E31bF26"; // Replace with your contract's address
+const contractAddress = "0xE6Df26B5b74B8918ba339bd9068AE9c90751115f"; // Replace with your contract's address
 const contractABI = [
   {
     "anonymous": false,
@@ -207,10 +207,6 @@ const contractABI = [
   }
 ]; // Replace with your contract's ABI from JSON file anytime you edit contract
 
-(async function initialize() {
-  await window.ethereum.request({ method: 'eth_requestAccounts' });
-  localStorage.setItem('metaMaskConnected', 'true');
-})();
 
 function refreshUI() {
   if (document.getElementById('candidates-list')) {
@@ -237,23 +233,29 @@ window.addEventListener('load', async () => {
   if (window.ethereum) {
     web3 = new Web3(window.ethereum);
     try {
-      // If not connected before, request account access
-      if (localStorage.getItem('metaMaskConnected') !== 'true') {
+      const alreadyConnected = localStorage.getItem('metaMaskConnected') === 'true';
+      if (!alreadyConnected) {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
+        localStorage.setItem('metaMaskConnected', 'true');
       }
       votingSystem = new web3.eth.Contract(contractABI, contractAddress);
+      
       subscribeToEvents();
+      refreshUI();
+
+      // Now that votingSystem should be set up, update the candidate list.
       await updateCandidateList();
     } catch (error) {
       console.error("Access to Ethereum account was denied.", error);
-      // Update the UI to inform user access was denied
+      // Update the UI to inform the user access was denied
     }
   } else {
     console.error("No Ethereum provider found. Install MetaMask!");
-    // Update the UI to inform user to install MetaMask
+    // Update the UI to inform the user to install MetaMask
   }
-  refreshUI(); // Ensure the UI is refreshed regardless of the MetaMask connection
 });
+
+
 
 function subscribeToEvents() {
     votingSystem.events.CandidateRegistered()
