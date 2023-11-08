@@ -1,6 +1,6 @@
 let web3;
 let votingSystem;
-const contractAddress = "0xE6Df26B5b74B8918ba339bd9068AE9c90751115f"; // Replace with your contract's address
+const contractAddress = "0x88b7c6D9019c91bc77A4b4750B5191530BBAacFd"; // Replace with your contract's address
 const contractABI = [
   {
     "anonymous": false,
@@ -353,6 +353,53 @@ async function endVoting() {
         // Update the UI to inform the user about the error
     }
 }
+async function displayCandidatesAndVotes() {
+  try {
+      const candidates = await votingSystem.methods.getAllCandidates().call();
+      const candidateNames = candidates.map(candidate => candidate.name);
+      const voteCounts = candidates.map(candidate => parseInt(candidate.voteCount));
+
+      const ctx = document.getElementById('votesChart').getContext('2d');
+      const votesChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+              labels: candidateNames,
+              datasets: [{
+                  label: 'Votes',
+                  data: voteCounts,
+                  backgroundColor: [
+                      // Define colors for each slice here
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      // ... add more colors for more candidates
+                  ],
+                  borderColor: [
+                      // Define border colors for each slice here
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      // ... add more border colors for more candidates
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              responsive: true,
+              plugins: {
+                  legend: {
+                      display: true
+                  }
+              }
+          }
+      });
+
+  } catch (error) {
+      console.error("Error displaying candidates and votes:", error);
+      // Update the UI to inform the user about the error
+  }
+}
+
 
 // Listen for account changes in MetaMask and reload the page to reset state
 //window.ethereum.on('accountsChanged', (accounts) => {
