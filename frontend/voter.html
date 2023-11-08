@@ -8,23 +8,29 @@
     <img src="ethelect.png" alt="Ethelect Logo" id="ethelect-logo">
     <h1>Voter Page</h1>
 
-    <!-- Voter Login -->
     <h2>Login as a Voter</h2>
-    <button onclick="requestAccount()">Login with MetaMask</button>
+    <button id="login-button">Login with MetaMask</button>
 
     <h2>Candidates List</h2>
     <div id="candidates-list">
-        <!-- Candidates will be listed here -->
+        <!-- Candidates will be listed here by JavaScript -->
     </div>
 
     <h2>Vote for a Candidate</h2>
     <input id="candidateId" type="number" placeholder="Candidate ID">
-    <button onclick="voteForCandidate()">Vote</button>
+    <button id="vote-button">Vote</button>
 
     <p><a href="landing.html">Back to Home</a></p>
 
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.x/dist/web3.min.js"></script>
     <script src="js/app.js" defer></script>
+    <script>
+        // Attach event listeners after the page is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('login-button').addEventListener('click', requestAccount);
+            document.getElementById('vote-button').addEventListener('click', voteForCandidate);
+            updateCandidateList(); // This should populate the candidate list on page load
+        });
+    </script>
 </body>
 </html>
-

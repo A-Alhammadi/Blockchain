@@ -10,20 +10,28 @@
 
     <h2>Register a New Candidate</h2>
     <input id="new-candidate-name" type="text" placeholder="Candidate Name">
-    <button onclick="registerCandidate()">Register Candidate</button>
+    <!-- Use the event listener instead of inline onclick -->
+    <button id="register-candidate-btn">Register Candidate</button>
 
-    <!-- Add the candidates list container here -->
     <h2>Candidates List</h2>
     <div id="candidates-list"></div>
-    <!-- End of candidates list container -->
 
     <h2>Voting Controls</h2>
-    <button onclick="startVoting()">Start Voting</button>
-    <button onclick="endVoting()">End Voting</button>
+    <!-- Use the event listener instead of inline onclick -->
+    <button id="start-voting-btn">Start Voting</button>
+    <button id="end-voting-btn">End Voting</button>
 
     <p><a href="landing.html">Back to Home</a></p>
 
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.x/dist/web3.min.js"></script>
     <script src="js/app.js" defer></script>
+    <script>
+      // Additional script to add event listeners after the DOM content is loaded
+      document.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById('register-candidate-btn').addEventListener('click', registerCandidate);
+        document.getElementById('start-voting-btn').addEventListener('click', startVoting);
+        document.getElementById('end-voting-btn').addEventListener('click', endVoting);
+      });
+    </script>
 </body>
 </html>
