@@ -1,6 +1,6 @@
 let web3;
 let votingSystem;
-const contractAddress = "0x85Da404Cdf9Ad4C6d2cBbeCcE0E72A76eE6a0162"; // Replace with your contract's address
+const contractAddress = "0xAAd2c38fb5A61eA8b30e49E03E852263f94Aa568"; // Replace with your contract's address
 const contractABI = [
   {
     "anonymous": false,
@@ -205,7 +205,7 @@ const contractABI = [
     "stateMutability": "view",
     "type": "function"
   }
-]; // Replace with your contract's ABI
+]; // Replace with your contract's ABI from JSON file anytime you edit contract
 
 window.addEventListener('load', async () => {
     if (window.ethereum) {
