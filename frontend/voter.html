@@ -25,12 +25,23 @@
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.x/dist/web3.min.js"></script>
     <script src="js/app.js" defer></script>
     <script>
-        // Attach event listeners after the page is loaded
+        async function voteAndUpdate() {
+            await voteForCandidate();
+            updateCandidateList(); // Call this to update the list after a vote
+        }
+        
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('login-button').addEventListener('click', requestAccount);
-            document.getElementById('vote-button').addEventListener('click', voteForCandidate);
-            updateCandidateList(); // This should populate the candidate list on page load
-        });
+  const isConnected = localStorage.getItem('metaMaskConnected') === 'true';
+  const loginButton = document.getElementById('login-button');
+  if (isConnected) {
+    loginButton.style.display = 'none'; // Hide the button if already connected
+  } else {
+    loginButton.addEventListener('click', requestAccount);
+  }
+  document.getElementById('vote-button').addEventListener('click', voteAndUpdate);
+  updateCandidateList();
+});
+
     </script>
 </body>
 </html>
