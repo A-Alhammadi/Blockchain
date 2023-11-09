@@ -1,107 +1,100 @@
-// this line says that the code is allowed to be used by anyone as long as they follow the mit license rules
 // SPDX-License-Identifier: MIT
-
-// this tells us that the code is written in solidity version 0.8.0
 pragma solidity ^0.8.0;
 
-// we're starting a new contract called votingsystem
-contract votingsystem {
 
-    // this is a notice that something has happened, specifically a candidate has been registered with a number and a name
-    event candidateregistered(uint256 candidateid, string name);
+contract VotingSystem {
+         // this is a notice that a candidate was added
+    event CandidateRegistered(uint256 candidateId, string name);
 
-    // these two lines are switches to tell us if voting has started or ended
-    bool public isvotingstarted = false;
-    bool public isvotingended = false;
+    bool public isVotingStarted = false;
+    bool public isVotingEnded = false;
     // this is a secret place to store who owns the contract
     address private owner;
 
-    // when the contract is first made, it sets the owner to be the person who made the contract
-    constructor() {
-        owner = msg.sender;
-    }
-    // this function lets us see who the owner is
-    function getowner() public view returns (address) {
-        return owner;
+// Set the owner to the message sender (account that deploys the contract)
+constructor() {
+    owner = msg.sender;
+}
+function getOwner() public view returns (address) {
+    return owner;
+}
+
+// Modifier that only allows the owner to call the function
+modifier onlyOwner() {
+    require(msg.sender == owner, "Only the owner can call this function.");
+    _;
+}
+
+function startVoting() public onlyOwner {
+    require(!isVotingStarted, "Voting has already started.");
+    isVotingStarted = true;
+}
+function endVoting() public onlyOwner {
+    require(isVotingStarted && !isVotingEnded, "Voting hasn't started or already ended.");
+    isVotingEnded = true;
+}
+
+    // Struct for a single voter
+    struct Voter {
+        bool hasVoted;
+        uint votedCandidateId;
     }
 
-    // this is a special rule that only lets the owner use some functions
-    modifier onlyowner() {
-        require(msg.sender == owner, "only the owner can call this function.");
-        _;
-    }
-
-    // these functions let the owner start and end the voting
-    function startvoting() public onlyowner {
-        require(!isvotingstarted, "voting has already started.");
-        isvotingstarted = true;
-    }
-    function endvoting() public onlyowner {
-        require(isvotingstarted && !isvotingended, "voting hasn't started or already ended.");
-        isvotingended = true;
-    }
-
-    // this is a way to keep track of a voter with a switch if they voted and who they voted for
-    struct voter {
-        bool hasvoted;
-        uint votedcandidateid;
-    }
-
-    // this is a way to keep track of a candidate with their name and how many votes they have
-    struct candidate {
+    // Struct for a single candidate
+    struct Candidate {
         string name;
-        uint votecount;
+        uint voteCount;
     }
 
-    // this connects a person's address to their voter details
-    mapping(address => voter) public voters;
+    // Map address to voter's details
+    mapping(address => Voter) public voters;
     
-    // this is a list of all the candidates
-    candidate[] public candidates;
+    //array of candidates
+    Candidate[] public candidates;
     
-    // this function lets the owner add a new candidate
-    function registercandidate(string memory _name) public onlyowner returns (uint) {
-        candidates.push(candidate({
-            name: _name,
-            votecount: 0
-        }));
-        uint id = candidates.length - 1;
-        emit candidateregistered(id, _name);
-        return id;
+    // Register new candidate
+   function registerCandidate(string memory _name) public onlyOwner returns (uint) {
+    candidates.push(Candidate({
+        name: _name,
+        voteCount: 0
+    }));
+    uint id = candidates.length - 1;
+    emit CandidateRegistered(id, _name);
+    return id;
+}
+
+
+    // Register  voter (should have more controls to prevent double registration, etc)
+    function registerVoter() public {
+        require(!voters[msg.sender].hasVoted, "Voter has already registered");
+        voters[msg.sender].hasVoted = false;
     }
 
-    // this function lets someone register to vote (but it should have more checks to make sure people don't register more than once)
-    function registervoter() public {
-        require(!voters[msg.sender].hasvoted, "voter has already registered");
-        voters[msg.sender].hasvoted = false;
+    // Vote for candidate
+    function vote(uint _candidateId) public {
+        require(isVotingStarted && !isVotingEnded, "Voting not allowed at this time.");
+        Voter storage sender = voters[msg.sender];
+        require(!sender.hasVoted, "You have already voted.");
+        require(_candidateId < candidates.length, "Invalid candidate.");
+
+        sender.hasVoted = true;
+        sender.votedCandidateId = _candidateId;
+
+        candidates[_candidateId].voteCount += 1;
     }
 
-    // this function lets you vote for a candidate
-    function vote(uint _candidateid) public {
-        require(isvotingstarted && !isvotingended, "voting not allowed at this time.");
-        voter storage sender = voters[msg.sender];
-        require(!sender.hasvoted, "you have already voted.");
-        require(_candidateid < candidates.length, "invalid candidate.");
-
-        sender.hasvoted = true;
-        sender.votedcandidateid = _candidateid;
-
-        candidates[_candidateid].votecount += 1;
-    }
-
-    // this function tells us how many candidates there are
-    function getcandidatescount() public view returns (uint) {
+    // Get count of candidates
+    function getCandidatesCount() public view returns (uint) {
         return candidates.length;
     }
     
-    // this function shows us all the candidates
-    function getallcandidates() public view returns (candidate[] memory) {
-        return candidates;
-    }
+    function getAllCandidates() public view returns (Candidate[] memory) {
+    return candidates;
+}
 
-    // this function tells us how many votes a specific candidate has
-    function getcandidatevotecount(uint _candidateid) public view returns (uint) {
-        require(_candidateid < candidates.length, "invalid candidate.");
-        return candidates[_candidateid].votecount;
+    // Get specific candidate's vote count
+    function getCandidateVoteCount(uint _candidateId) public view returns (uint) {
+        require(_candidateId < candidates.length, "Invalid candidate.");
+        return candidates[_candidateId].voteCount;
     }
 }
