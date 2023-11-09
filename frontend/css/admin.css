@@ -42,10 +42,11 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 18px; /* Make font size consistent with landing.css */
 }
 
 button:hover {
-    background-color: #72B6D4; /* slightly darker blue on hover */
+    background-color: #00FFFF; /* Same hover color as landing.css for consistency */
 }
 
 p {
@@ -61,4 +62,3 @@ a {
 a:hover {
     text-decoration: underline;
 }
-

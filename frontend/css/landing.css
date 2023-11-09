@@ -1,5 +1,4 @@
 /* landing.css */
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -33,18 +32,22 @@ footer {
     width: 100%;
 }
 
-button {
-    display: block;
+button, .button-link {
+    display: inline-block;
     margin: 20px auto;
-    padding: 10px 15px;
+    padding: 15px 30px;
     background-color: #89CFF0; /* light blue */
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
+button:hover, .button-link:hover {
     background-color: #00FFFF; /* slightly darker blue on hover */
 }
 
@@ -53,11 +56,11 @@ p {
     margin: 20px 0;
 }
 
-a {
+a:not(.button-link) {
     color: #000;
     text-decoration: none;
 }
 
-a:hover {
+a:not(.button-link):hover {
     text-decoration: underline;
 }
