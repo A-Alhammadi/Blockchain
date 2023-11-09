@@ -1,0 +1,31 @@
+Ethelect Voting System - User Instructions
+
+Once you have completed the setup steps and have the Ethelect Voting System running on your local Ganache blockchain, here's how you can interact with the system:
+
+General Usage:
+
+Open your web browser and navigate to your local server, typically at http://localhost:8080.
+Ensure MetaMask is connected to your local Ganache network and logged in with a Ganache account.
+
+Admin Controls:
+
+The admin controls are available on the Admin Page. For now, these controls are exclusive to the Ethereum account that deployed the smart contract. If you are not logged in as the admin, these controls will not be available.
+As the admin, you can register new candidates for the election using the provided input field and button.
+You can also start and end the voting period. Once the voting period has ended, no further votes can be cast.
+
+Voting Process:
+
+To vote, navigate to the Voter Page from the main menu.
+AFter connecting to your Metamask account, you'll see a list of candidates. Each voter can vote once for a candidate by entering the candidate's ID and clicking the Vote button.
+Each address on the blockchain can only register and vote once to ensure the integrity of the voting process.
+
+Viewing Results:
+
+Results can be viewed on the Results Page, which displays a pie chart of the votes each candidate has received.
+You can refresh the results to get the latest voting data by clicking the Refresh Results button.
+
+Notes:
+
+All interactions with the smart contract, such as casting a vote or registering as a voter, will require a transaction to be signed and sent via MetaMask. Make sure you have your MetaMask wallet open and are ready to confirm these transactions.
+Since you are using a local Ganache blockchain, there's no real ETH or gas cost associated with these transactions, but they will simulate the real Ethereum network's behavior.
+Remember to keep Ganache running in the background during your session. If Ganache is closed, the connection to your local blockchain will be lost.
