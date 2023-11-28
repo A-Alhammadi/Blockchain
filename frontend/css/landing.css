@@ -64,3 +64,28 @@ a:not(.button-link) {
 a:not(.button-link):hover {
     text-decoration: underline;
 }
+
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 20px; /* Larger text for headers */
+        padding: 15px 0; /* Adjust padding */
+    }
+
+    button, .button-link {
+        padding: 15px 20px; /* Larger padding for ease of interaction */
+        font-size: 16px; /* Increase font size for readability */
+        width: 90%; /* Wider buttons for easier clicking */
+    }
+
+    #ethelect-logo {
+        width: 100px; /* Adjust logo size for smaller screens */
+    }
+
+    p, a:not(.button-link) {
+        font-size: 16px; /* Larger font size for readability */
+    }
+
+    footer {
+        padding: 15px 0; /* Adjust footer padding */
+    }
+}

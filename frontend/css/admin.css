@@ -62,3 +62,30 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+@media screen and (max-width: 600px) {
+    h1, h2 {
+        font-size: 20px; /* Larger text for headers */
+        padding: 15px 0; /* Adjust padding */
+    }
+
+    input[type="text"], input[type="number"] {
+        width: 90%; /* Increase width for better visibility */
+        padding: 15px; /* Larger padding for easier interaction */
+        font-size: 16px; /* Larger font size for readability */
+    }
+
+    button {
+        padding: 15px 20px; /* Increase padding for larger touch area */
+        font-size: 20px; /* Increase font size for readability */
+        width: 80%; /* Wider buttons for easier interaction */
+    }
+
+    #ethelect-logo {
+        width: 100px; /* Adjust logo size */
+    }
+
+    p, a {
+        font-size: 16px; /* Increase font size for better readability */
+    }
+}
