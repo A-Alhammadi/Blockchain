@@ -1,6 +1,7 @@
 let web3;
 let votingSystem;
-const contractAddress = "0xD248702c87D8d48ffc128e2AF03989bB0431d925"; // Replace with your contract's address
+//const contractAddress = "0x1A4973BF86054e373561d5523A303f8f744CE3cC"; // Replace with your contract's address
+const contractAddress = "0xa4a57C70939Fb81CC4aaE5B04bc25E38D2CECa33";
 const contractABI = [
   {
     "inputs": [],
@@ -48,7 +49,8 @@ const contractABI = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [],
@@ -61,7 +63,8 @@ const contractABI = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [],
@@ -74,7 +77,8 @@ const contractABI = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -98,7 +102,8 @@ const contractABI = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [],
@@ -111,7 +116,8 @@ const contractABI = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [],
@@ -177,7 +183,8 @@ const contractABI = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [],
@@ -202,7 +209,8 @@ const contractABI = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -221,7 +229,8 @@ const contractABI = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   }
 ]; // Replace with your contract's ABI from JSON file anytime you edit contract
 
@@ -426,14 +435,14 @@ async function displayCandidatesAndVotes() {
                       'rgba(255, 99, 132, 0.2)',
                       'rgba(54, 162, 235, 0.2)',
                       'rgba(255, 206, 86, 0.2)',
-                      // ... add more colors for more candidates
+                      //add more colors for more candidates
                   ],
                   borderColor: [
-                      // Define border colors for each slice here
+                      // Define border colors for each slice 
                       'rgba(255, 99, 132, 1)',
                       'rgba(54, 162, 235, 1)',
                       'rgba(255, 206, 86, 1)',
-                      // ... add more border colors for more candidates
+                      //add more border colors for more candidates
                   ],
                   borderWidth: 1
               }]
@@ -454,16 +463,6 @@ async function displayCandidatesAndVotes() {
   }
 }
 
-
-// Listen for account changes in MetaMask and reload the page to reset state
-//window.ethereum.on('accountsChanged', (accounts) => {
- //   window.location.reload();
-//});
-
-// Listen for chain changes in MetaMask and reload the page to reset state
-//window.ethereum.on('chainChanged', (chainId) => {
- //   window.location.reload();
-//});
 window.ethereum.on('accountsChanged', () => {
   refreshUI().catch(console.error);
 });
