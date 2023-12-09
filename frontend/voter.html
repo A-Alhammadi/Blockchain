@@ -8,7 +8,7 @@
     <img src="ethelect.png" alt="Ethelect Logo" id="ethelect-logo">
     <h1>Voter Page</h1>
 
-    <h2>Login as a Voter</h2>
+    <p class="info-text">Login as a Voter to participate in the voting process.</p>
     <button id="login-button">Login with MetaMask</button>
 
     <h2>Candidates List</h2>
@@ -17,6 +17,7 @@
     </div>
 
     <h2>Vote for a Candidate</h2>
+    <p class="info-text">Choose the number corresponding to your candidate from the list and enter it below to cast your vote.</p>
     <input id="candidateId" type="number" placeholder="Candidate ID">
     <button id="vote-button">Vote</button>
 
@@ -27,21 +28,20 @@
     <script>
         async function voteAndUpdate() {
             await voteForCandidate();
-            updateCandidateList(); // Call this to update the list after a vote
+            updateCandidateList();
         }
         
         document.addEventListener('DOMContentLoaded', function() {
-  const isConnected = localStorage.getItem('metaMaskConnected') === 'true';
-  const loginButton = document.getElementById('login-button');
-  if (isConnected) {
-    loginButton.style.display = 'none'; // Hide the button if already connected
-  } else {
-    loginButton.addEventListener('click', requestAccount);
-  }
-  document.getElementById('vote-button').addEventListener('click', voteAndUpdate);
-  updateCandidateList();
-});
-
+            const isConnected = localStorage.getItem('metaMaskConnected') === 'true';
+            const loginButton = document.getElementById('login-button');
+            if (isConnected) {
+                loginButton.style.display = 'none';
+            } else {
+                loginButton.addEventListener('click', requestAccount);
+            }
+            document.getElementById('vote-button').addEventListener('click', voteAndUpdate);
+            updateCandidateList();
+        });
     </script>
 </body>
 </html>

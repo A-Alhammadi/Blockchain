@@ -8,7 +8,8 @@
     <img src="ethelect.png" alt="Ethelect Logo" id="ethelect-logo">
     <h1>Admin Page</h1>
 
-    <!-- The admin controls are wrapped in a div with an id "admin-controls" -->
+    <p class="info-text">Controls are only accessible to Administrator accounts.</p>
+
     <div id="admin-controls" style="display:none;"> <!-- Initially hidden -->
         <h2>Register a New Candidate</h2>
         <input id="new-candidate-name" type="text" placeholder="Candidate Name">
@@ -29,15 +30,9 @@
     <script>
       // Script to add event listeners after the DOM content is loaded
       document.addEventListener('DOMContentLoaded', (event) => {
-        // Add event listener for registering a candidate
         document.getElementById('register-candidate-btn').addEventListener('click', registerCandidate);
-        // Add event listener for starting the voting process
         document.getElementById('start-voting-btn').addEventListener('click', startVoting);
-        // Add event listener for ending the voting process
         document.getElementById('end-voting-btn').addEventListener('click', endVoting);
-
-        // Call refreshUI to update the display of the admin controls
-        // based on the user's ownership status
         refreshUI();
       });
     </script>

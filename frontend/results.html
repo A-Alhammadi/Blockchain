@@ -8,6 +8,8 @@
     <img src="ethelect.png" alt="Ethelect Logo" id="ethelect-logo">
     <h1>Results</h1>
 
+    <p class="info-text">View the latest voting results below. Press 'Refresh Results' to update the information.</p>
+
     <div id="resultsTable">
         <!-- Chart will be inserted here -->
         <canvas id="votesChart"></canvas>
@@ -23,7 +25,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('refresh-results-button').addEventListener('click', displayCandidatesAndVotes);
-            displayCandidatesAndVotes(); // Call this on page load to display results immediately
+            displayCandidatesAndVotes();
         });
     </script>    
 </body>
