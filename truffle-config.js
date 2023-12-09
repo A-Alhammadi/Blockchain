@@ -1,5 +1,5 @@
 //This commented out first part is for Ganache
-/*module.exports = {
+module.exports = {
   networks: {
     development: {
       host: "127.0.0.1",     // Localhost
@@ -8,9 +8,9 @@
       network_id: "*"        // Match any network
     }
   },
-*/
+
 //This is for Sepolia test network
-const HDWalletProvider = require('@truffle/hdwallet-provider');
+/*const HDWalletProvider = require('@truffle/hdwallet-provider');
 const mnemonic = 'path country excite decline combine lounge eyebrow sound join stomach blouse system'; // Replace with your wallet's mnemonic
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
       skipDryRun: true     // Skip dry run before migrations
     },
   },
-
+*/
   compilers: {
     solc: {
       version: "0.8.0"  // solidity version
